@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mcode-web-deploy"
+version = "0.1.0"
+description = "Zero-token, direct static web deployment tool for MiniMax (mcode) space hosting"
+readme = "README.md"
+requires-python = ">=3.7"
+authors = [
+    { name = "wurong" }
+]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+
+[project.scripts]
+mcode-deploy = "mcode_web_deploy.cli:main"
