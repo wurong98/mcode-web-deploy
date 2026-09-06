@@ -17,6 +17,7 @@ setup(
     python_requires=">=3.7",
     entry_points={
         "console_scripts": [
+            "mcode-web-deploy=mcode_web_deploy.cli:main",
             "mcode-deploy=mcode_web_deploy.cli:main",
         ],
     },

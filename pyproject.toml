@@ -17,4 +17,5 @@ classifiers = [
 ]
 
 [project.scripts]
+mcode-web-deploy = "mcode_web_deploy.cli:main"
 mcode-deploy = "mcode_web_deploy.cli:main"

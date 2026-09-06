@@ -19,7 +19,8 @@
 - ⚡ **极速发布**：全流程（打包 -> 获取签名 -> OSS 直传 -> CDN 注册）从 15 秒缩短至 **2 秒以内**；
 - ⚡ **零第三方依赖**：纯 Python 3 原生标准库（`urllib`, `zipfile`, `json`），开箱即用；
 - ⚡ **Agent 友好**：提供 `--json` 规范输出和单行 Bash 指令，其他 Agent 调它就像调 `curl` 一样稳定可靠；
-- ⚡ **支持原地更新**：传入 `--update <node_id>` 即可无缝覆盖更新网站，保持公网 URL 不变。
+- ⚡ **支持原地更新**：传入 `--update <node_id>` 即可无缝覆盖更新网站，保持公网 URL 不变；
+- ⚡ **双命令支持**：标准命令 `mcode-web-deploy`（无歧义），同时提供短别名 `mcode-deploy`。
 
 ---
 
@@ -45,14 +46,14 @@
 
 ## 📦 安装与配置
 
-### 方式 1：全局软链接安装（推荐）
+### 方式 1：全局安装（推荐）
 在项目目录下执行：
 ```bash
 git clone https://github.com/wurong98/mcode-web-deploy.git
 cd mcode-web-deploy
 ./install.sh
 ```
-该脚本会将 `mcode-deploy` 软链接到 `/usr/local/bin/mcode-deploy`。
+该脚本会自动在 `/usr/local/bin` 安装主命令 `mcode-web-deploy` 与短别名 `mcode-deploy`。
 
 ### 方式 2：Python pip 安装
 ```bash
@@ -61,7 +62,7 @@ pip install .
 
 ### 方式 3：单文件直接运行（免安装）
 ```bash
-python3 /path/to/mcode-web-deploy/bin/mcode-deploy [options]
+python3 /path/to/mcode-web-deploy/bin/mcode-web-deploy [options]
 ```
 
 ---
@@ -86,20 +87,22 @@ python3 /path/to/mcode-web-deploy/bin/mcode-deploy [options]
 
 ```bash
 # 1. 部署当前目录下的网站（自动寻找 dist/build/out 或当前目录下的 index.html）
-mcode-deploy
+mcode-web-deploy
 
 # 2. 部署指定项目目录
-mcode-deploy ./my-vue-project
+mcode-web-deploy ./my-vue-project
 
 # 3. 指定构建目录与自定义项目名称
-mcode-deploy ./my-app --dist dist --name "Awesome App"
+mcode-web-deploy ./my-app --dist dist --name "Awesome App"
 
 # 4. 原地更新已有站点（保持 URL 不变）
-mcode-deploy ./my-app --update <node_id>
+mcode-web-deploy ./my-app --update <node_id>
 
 # 5. 纯静音模式（只输出最终 URL，方便管道组合）
-mcode-deploy -q
+mcode-web-deploy -q
 ```
+
+> 💡 **提示**：所有命令中的 `mcode-web-deploy` 均可缩写为 `mcode-deploy`。
 
 ### 2. 参数一览
 
@@ -122,11 +125,11 @@ mcode-deploy -q
 ### 在项目 `CLAUDE.md` 或 `.cursorrules` 中加入：
 
 ```markdown
-## 网页发布 (Web Deployment)
-本项目配置了 `mcode-deploy` 工具，用于将静态网页发布到 MiniMax 空间。
-- **构建后发布**：`npm run build && mcode-deploy --json`
-- **单 HTML 快速发布**：`mcode-deploy . --json`
-- **原地更新站点**：`mcode-deploy . --update <node_id> --json`
+## 网页发布与分享 (Web Deployment)
+本项目配置了 `mcode-web-deploy` 工具，用于将静态网页极速发布到 MiniMax 托管空间：
+- **构建后发布**：`npm run build && mcode-web-deploy --json`
+- **单 HTML 快速发布**：`mcode-web-deploy . --json`
+- **原地更新站点**：`mcode-web-deploy . --update <node_id> --json`
 - **命令输出解析**：`--json` 会返回 `{"success": true, "url": "...", "node_id": "..."}`，请将 `url` 展示给用户。
 ```
 
@@ -134,7 +137,7 @@ mcode-deploy -q
 
 执行：
 ```bash
-mcode-deploy ./dist-project --json
+mcode-web-deploy ./dist-project --json
 ```
 
 返回（直接在标准输出解析）：

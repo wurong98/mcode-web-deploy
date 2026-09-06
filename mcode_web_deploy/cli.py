@@ -8,7 +8,7 @@ from .deployer import DeployError, deploy
 
 def main(argv=None):
     parser = argparse.ArgumentParser(
-        prog="mcode-deploy",
+        prog="mcode-web-deploy",
         description="Zero-Token Direct Static Web Deploy Tool for MiniMax (mcode) space hosting.",
     )
     parser.add_argument(
@@ -53,7 +53,7 @@ def main(argv=None):
 
     try:
         if not args.json and not args.quiet:
-            print("🚀 mcode-deploy: Direct Web Deploy (Zero-Token)")
+            print("🚀 mcode-web-deploy: Direct Web Deploy (Zero-Token)")
 
         result = deploy(
             project_dir=Path(args.project_dir),
@@ -77,7 +77,7 @@ def main(argv=None):
             print("=" * 50)
             if not result.is_update:
                 print("Tip: Update this site later with:")
-                print(f"  mcode-deploy {args.project_dir} --update {result.node_id}")
+                print(f"  mcode-web-deploy {args.project_dir} --update {result.node_id}")
 
         sys.exit(0)
 

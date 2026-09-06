@@ -8,10 +8,10 @@ This file provides guidance to Claude Code and other AI coding assistants when w
 ## Architecture
 - `mcode_web_deploy/deployer.py`: Core deployment logic (packaging, pre-signed OSS URL requests, OSS direct uploads, CDN registration/updating).
 - `mcode_web_deploy/cli.py`: Command-line interface with `--json`, `--quiet`, `--update`, and auto-detection features.
-- `bin/mcode-deploy`: Standalone executable entry script.
+- `bin/mcode-web-deploy`: Standalone executable entry script (with `bin/mcode-deploy` alias).
 - `tests/test_deployer.py`: Unit tests using standard Python `unittest`.
 
 ## Commands
 - Run tests: `python3 -m unittest discover tests`
-- Run CLI locally: `python3 bin/mcode-deploy --help`
-- Run with JSON output: `python3 bin/mcode-deploy <path> --json`
+- Run CLI locally: `python3 bin/mcode-web-deploy --help`
+- Run with JSON output: `python3 bin/mcode-web-deploy <path> --json`
