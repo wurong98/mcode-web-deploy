@@ -118,11 +118,34 @@ mcode-web-deploy -q
 
 ---
 
-## 🤖 让其他 AI Agent 使用（Claude Code / Cursor / Windsurf / Cline 等）
+## 🤖 让 Claude Code 等 AI Agent 接入
 
-当你使用其他 AI Agent 时，只需要在项目 Prompt、系统规则（如 `CLAUDE.md` / `.cursorrules` / `rules`）中加入如下配置，Agent 就能学会为你一键发布网页：
+为了让 **Claude Code**、**Cursor**、**Windsurf**、**Cline** 等 Agent 能够自动识别意图并在需要时自动调用部署，推荐以下两种接入方式：
 
-### 在项目 `CLAUDE.md` 或 `.cursorrules` 中加入：
+### 方案 A：配置为 Claude Code 专用 Skill（最丝滑推荐 ⭐⭐⭐⭐⭐）
+
+Claude Code 原生支持 **Skills**（技能机制）。只需在当前项目（或全局用户目录）添加 `deploy-web` skill，当你对 Claude Code 说“把网页发布一下”、“部署上线”、“生成分享链接”时，Claude 会自动按最佳流程执行：
+
+#### 1. 全局配置（所有项目随时可用）
+```bash
+# 创建全局技能目录并复制 Skill
+mkdir -p ~/.claude/skills
+cp -r skills/deploy-web ~/.claude/skills/
+```
+
+#### 2. 项目级配置（随当前代码库分发）
+本项目已内置 `.claude/skills/deploy-web.md`，你也可以直接复制到其他工程的 `.claude/skills/` 中。
+
+> **效果体验**：你在 Claude Code 里直接说：
+> > “帮我把做好的网站部署上线”
+> 
+> Claude 会自动触发 `deploy-web` 技能，先探测或执行 build，然后调用 `mcode-web-deploy . --json`，并把生成的公网 URL 以 Markdown 链接展示给你！
+
+---
+
+### 方案 B：写入规则文件（支持 Claude / Cursor / Windsurf / Cline 通用）
+
+在任意项目根目录的 `CLAUDE.md` 或 `.cursorrules` 中加入：
 
 ```markdown
 ## 网页发布与分享 (Web Deployment)
