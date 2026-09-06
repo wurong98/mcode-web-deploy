@@ -127,10 +127,10 @@ mcode-web-deploy -q
 Claude Code 原生支持 **Skills**（技能机制）。只需在当前项目（或全局用户目录）添加 `deploy-web` skill，当你对 Claude Code 说“把网页发布一下”、“部署上线”、“生成分享链接”时，Claude 会自动按最佳流程执行：
 
 #### 1. 全局配置（所有项目随时可用）
+运行 `./install.sh` 会自动帮你将 Skill 配置到 `~/.claude/skills/deploy-web.md`，或者手动执行：
 ```bash
-# 创建全局技能目录并复制 Skill
 mkdir -p ~/.claude/skills
-cp -r skills/deploy-web ~/.claude/skills/
+cp .claude/skills/deploy-web.md ~/.claude/skills/deploy-web.md
 ```
 
 #### 2. 项目级配置（随当前代码库分发）

@@ -18,6 +18,14 @@ echo "Installing mcode-web-deploy to $TARGET_DIR..."
 install_link "$DIR/bin/mcode-web-deploy" "$TARGET_DIR/mcode-web-deploy"
 install_link "$DIR/bin/mcode-web-deploy" "$TARGET_DIR/mcode-deploy"
 
+# Optional: Install Claude Code skill if ~/.claude exists
+CLAUDE_SKILLS_DIR="$HOME/.claude/skills"
+if [ -d "$HOME/.claude" ]; then
+    mkdir -p "$CLAUDE_SKILLS_DIR"
+    cp "$DIR/.claude/skills/deploy-web.md" "$CLAUDE_SKILLS_DIR/deploy-web.md"
+    echo "   - $CLAUDE_SKILLS_DIR/deploy-web.md (Claude Code skill)"
+fi
+
 echo "✅ Successfully installed:"
 echo "   - $TARGET_DIR/mcode-web-deploy (primary)"
 echo "   - $TARGET_DIR/mcode-deploy (alias)"
