@@ -19,8 +19,7 @@
 - ⚡ **极速发布**：全流程（打包 -> 获取签名 -> OSS 直传 -> CDN 注册）从 15 秒缩短至 **2 秒以内**；
 - ⚡ **零第三方依赖**：纯 Python 3 原生标准库（`urllib`, `zipfile`, `json`），开箱即用；
 - ⚡ **Agent 友好**：提供 `--json` 规范输出和单行 Bash 指令，其他 Agent 调它就像调 `curl` 一样稳定可靠；
-- ⚡ **支持原地更新**：传入 `--update <node_id>` 即可无缝覆盖更新网站，保持公网 URL 不变；
-- ⚡ **双命令支持**：标准命令 `mcode-web-deploy`（无歧义），同时提供短别名 `mcode-deploy`。
+- ⚡ **支持原地更新**：传入 `--update <node_id>` 即可无缝覆盖更新网站，保持公网 URL 不变。
 
 ---
 
@@ -46,14 +45,26 @@
 
 ## 📦 安装与配置
 
-### 方式 1：全局安装（推荐）
-在项目目录下执行：
+### 方式 1：一键安装（推荐）
+
+**在线安装（curl | bash）：**
+```bash
+curl -fsSL https://raw.githubusercontent.com/wurong98/mcode-web-deploy/master/install.sh | bash
+```
+
+**或者克隆本地安装：**
 ```bash
 git clone https://github.com/wurong98/mcode-web-deploy.git
 cd mcode-web-deploy
 ./install.sh
 ```
-该脚本会自动在 `/usr/local/bin` 安装主命令 `mcode-web-deploy` 与短别名 `mcode-deploy`。
+
+> **设计保障（类似 uv / rustup 工程设计）**：
+> - 默认安装至免 root 权限的 `~/.local/bin`；
+> - 默认安装独立自包含可执行包（copy 封装，非脆弱软链接）；
+> - 支持自定义前缀：`PREFIX=/usr/local ./install.sh` 或 `--prefix /opt`；
+> - 遵循非破坏原则：已存在的文件默认不覆盖，传入 `--force`（或 `-f`）显式覆盖；
+> - 自动向 Claude Code 与 Codex 注册 `mcode-web-deploy` 专属 Skill，并检测 PATH 给出配置指引。
 
 ### 方式 2：Python pip 安装
 ```bash
@@ -102,8 +113,6 @@ mcode-web-deploy ./my-app --update <node_id>
 mcode-web-deploy -q
 ```
 
-> 💡 **提示**：所有命令中的 `mcode-web-deploy` 均可缩写为 `mcode-deploy`。
-
 ### 2. 参数一览
 
 | 参数 | 说明 |
@@ -124,9 +133,9 @@ mcode-web-deploy -q
 
 ### 方案 A：一键配置 Universal Skill（适用于 Claude Code & Codex）⭐⭐⭐⭐⭐
 
-运行本项目的 `./install.sh` 脚本，会自动将通用技能同时分发到本机的 Agent 技能目录：
-- **Claude Code**：`~/.claude/skills/deploy-web.md`
-- **Codex**：`~/.codex/skills/deploy-web/SKILL.md`
+运行本项目的 `./install.sh` 脚本，会自动将通用技能同时分发到本机的 Agent 技能目录（命名为专属的 `mcode-web-deploy`，杜绝任何短名冲突）：
+- **Claude Code**：`~/.claude/skills/mcode-web-deploy/SKILL.md`
+- **Codex**：`~/.codex/skills/mcode-web-deploy/SKILL.md`
 
 ```bash
 # 执行安装脚本即可完成 CLI + 双 Agent 技能自动注册
@@ -136,7 +145,7 @@ mcode-web-deploy -q
 > **效果体验**：你在 Claude Code 或 Codex 里直接说：
 > > “帮我把做好的网站部署上线” / “生成分享链接”
 > 
-> Agent 会自动触发 `deploy-web` 技能，先探测或执行 build，然后调用 `mcode-web-deploy . --json`，并把生成的公网 URL 以 Markdown 链接优雅展示给你！
+> Agent 会自动触发 `mcode-web-deploy` 技能，先探测或执行 build，然后调用 `mcode-web-deploy . --json`，并把生成的公网 URL 以 Markdown 链接优雅展示给你！
 
 ---
 

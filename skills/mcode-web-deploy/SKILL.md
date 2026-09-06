@@ -1,9 +1,9 @@
 ---
-name: deploy-web
-description: Build and deploy the project's static website to MiniMax space CDN using mcode-web-deploy, returning a public URL. Triggers on "deploy", "publish website", "share link", "发布网站", "部署网页", "上线".
+name: mcode-web-deploy
+description: Build and deploy the project's static website to MiniMax space CDN using mcode-web-deploy, returning a public URL. Triggers on "deploy", "publish website", "share link", "发布网站", "部署网页", "上线", "mcode-web-deploy".
 ---
 
-# Deploy Web Skill
+# Deploy Web via mcode-web-deploy
 
 Deploy the static web project or build artifacts to MiniMax public CDN via `mcode-web-deploy`.
 
