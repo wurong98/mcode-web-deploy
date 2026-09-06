@@ -118,42 +118,40 @@ mcode-web-deploy -q
 
 ---
 
-## 🤖 让 Claude Code 等 AI Agent 接入
+## 🤖 让 AI Agent 全面接入 (Claude Code / Codex / agy / Cursor / Cline)
 
-为了让 **Claude Code**、**Cursor**、**Windsurf**、**Cline** 等 Agent 能够自动识别意图并在需要时自动调用部署，推荐以下两种接入方式：
+为了让 **Claude Code**、**Codex**、**agy**、**Cursor**、**Windsurf**、**Cline** 等所有 Agent 都能自动识别意图并在需要时自动调用部署，提供了标准化、跨 Agent 的双层解决方案：
 
-### 方案 A：配置为 Claude Code 专用 Skill（最丝滑推荐 ⭐⭐⭐⭐⭐）
+### 方案 A：一键配置 Universal Skill（适用于 Claude Code & Codex）⭐⭐⭐⭐⭐
 
-Claude Code 原生支持 **Skills**（技能机制）。只需在当前项目（或全局用户目录）添加 `deploy-web` skill，当你对 Claude Code 说“把网页发布一下”、“部署上线”、“生成分享链接”时，Claude 会自动按最佳流程执行：
+运行本项目的 `./install.sh` 脚本，会自动将通用技能同时分发到本机的 Agent 技能目录：
+- **Claude Code**：`~/.claude/skills/deploy-web.md`
+- **Codex**：`~/.codex/skills/deploy-web/SKILL.md`
 
-#### 1. 全局配置（所有项目随时可用）
-运行 `./install.sh` 会自动帮你将 Skill 配置到 `~/.claude/skills/deploy-web.md`，或者手动执行：
 ```bash
-mkdir -p ~/.claude/skills
-cp .claude/skills/deploy-web.md ~/.claude/skills/deploy-web.md
+# 执行安装脚本即可完成 CLI + 双 Agent 技能自动注册
+./install.sh
 ```
 
-#### 2. 项目级配置（随当前代码库分发）
-本项目已内置 `.claude/skills/deploy-web.md`，你也可以直接复制到其他工程的 `.claude/skills/` 中。
-
-> **效果体验**：你在 Claude Code 里直接说：
-> > “帮我把做好的网站部署上线”
+> **效果体验**：你在 Claude Code 或 Codex 里直接说：
+> > “帮我把做好的网站部署上线” / “生成分享链接”
 > 
-> Claude 会自动触发 `deploy-web` 技能，先探测或执行 build，然后调用 `mcode-web-deploy . --json`，并把生成的公网 URL 以 Markdown 链接展示给你！
+> Agent 会自动触发 `deploy-web` 技能，先探测或执行 build，然后调用 `mcode-web-deploy . --json`，并把生成的公网 URL 以 Markdown 链接优雅展示给你！
 
 ---
 
-### 方案 B：写入规则文件（支持 Claude / Cursor / Windsurf / Cline 通用）
+### 方案 B：项目级通用规则 AGENTS.md（适用于所有 Agent，包括 agy / Cursor / Cline）
 
-在任意项目根目录的 `CLAUDE.md` 或 `.cursorrules` 中加入：
+业内通用标准是项目根目录下的 **`AGENTS.md`**。本项目根目录自带的 `AGENTS.md` 可直接被 **agy**、**Cursor**、**Windsurf**、**Cline**、**Claude Code** 和 **Codex** 自动读取感知。
+
+你只需将 `AGENTS.md` 放置在任意需要发布网页的前端项目根目录即可：
 
 ```markdown
-## 网页发布与分享 (Web Deployment)
-本项目配置了 `mcode-web-deploy` 工具，用于将静态网页极速发布到 MiniMax 托管空间：
-- **构建后发布**：`npm run build && mcode-web-deploy --json`
-- **单 HTML 快速发布**：`mcode-web-deploy . --json`
-- **原地更新站点**：`mcode-web-deploy . --update <node_id> --json`
-- **命令输出解析**：`--json` 会返回 `{"success": true, "url": "...", "node_id": "..."}`，请将 `url` 展示给用户。
+# Agent Directives: Web Deployment
+当用户提出“发布网页”、“分享链接”、“部署上线”或前端开发完成需要在线预览时：
+1. 若存在构建命令（如 `package.json` 含 `build`），先运行 `npm run build`；
+2. 执行部署命令：`mcode-web-deploy . --json`（如需原地更新传入 `--update <node_id>`）；
+3. 提取返回 JSON 中的 `url`，将可访问的公网地址返回给用户。
 ```
 
 ### Agent 调用示例与 JSON 返回结构

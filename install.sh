@@ -14,19 +14,35 @@ install_link() {
     fi
 }
 
-echo "Installing mcode-web-deploy to $TARGET_DIR..."
+echo "1. Installing mcode-web-deploy CLI to $TARGET_DIR..."
 install_link "$DIR/bin/mcode-web-deploy" "$TARGET_DIR/mcode-web-deploy"
 install_link "$DIR/bin/mcode-web-deploy" "$TARGET_DIR/mcode-deploy"
+echo "   ✅ $TARGET_DIR/mcode-web-deploy (primary)"
+echo "   ✅ $TARGET_DIR/mcode-deploy (alias)"
 
-# Optional: Install Claude Code skill if ~/.claude exists
-CLAUDE_SKILLS_DIR="$HOME/.claude/skills"
+echo ""
+echo "2. Installing Universal Skill to Agent environments..."
+SKILL_DIR="$DIR/skills/deploy-web"
+
+# (A) Claude Code (~/.claude/skills)
 if [ -d "$HOME/.claude" ]; then
-    mkdir -p "$CLAUDE_SKILLS_DIR"
-    cp "$DIR/.claude/skills/deploy-web.md" "$CLAUDE_SKILLS_DIR/deploy-web.md"
-    echo "   - $CLAUDE_SKILLS_DIR/deploy-web.md (Claude Code skill)"
+    mkdir -p "$HOME/.claude/skills"
+    cp "$SKILL_DIR/SKILL.md" "$HOME/.claude/skills/deploy-web.md"
+    echo "   ✅ Claude Code: ~/.claude/skills/deploy-web.md"
 fi
 
-echo "✅ Successfully installed:"
-echo "   - $TARGET_DIR/mcode-web-deploy (primary)"
-echo "   - $TARGET_DIR/mcode-deploy (alias)"
-echo "You can now run 'mcode-web-deploy --help' from any terminal or Agent workspace."
+# (B) Codex (~/.codex/skills)
+if [ -d "$HOME/.codex" ]; then
+    mkdir -p "$HOME/.codex/skills/deploy-web"
+    cp "$SKILL_DIR/SKILL.md" "$HOME/.codex/skills/deploy-web/SKILL.md"
+    echo "   ✅ Codex:       ~/.codex/skills/deploy-web/SKILL.md"
+fi
+
+# (C) General Agent Skills directory (~/.local/share/agent-skills)
+mkdir -p "$HOME/.local/share/agent-skills/deploy-web"
+cp "$SKILL_DIR/SKILL.md" "$HOME/.local/share/agent-skills/deploy-web/SKILL.md"
+echo "   ✅ Generic:     ~/.local/share/agent-skills/deploy-web/SKILL.md"
+
+echo ""
+echo "🎉 Setup completed successfully!"
+echo "All coding agents (Claude Code, Codex, agy, Cursor, etc.) can now use 'mcode-web-deploy'."
